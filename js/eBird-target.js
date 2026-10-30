@@ -1,202 +1,135 @@
-const print_btn = document.querySelector(".Button.Button--small.Button--hollow");
-
-if (print_btn) {
-  print_btn.parentElement.insertAdjacentHTML(
-    "beforeend",
-    `
-<a href="#" class="Button Button--small Button--hollow" style="margin-left: 2px;" id="zoziology-target2csv">
-  <svg class="Icon Icon--download u-inline-xs" role="presentation"><use xlink:href="#Icon--download"></use></svg>
-  <span class="u-showForMedium">Download (csv)</span>
-</a>`
-  );
-}
-
-document.addEventListener("click", function (e) {
-  const target = e.target.closest("#zoziology-target2csv");
-  if (target) {
-    const category = ["native-and-naturalized", "exotic-provisional", "exotic-escapee", "hybrids"];
-    const data = category
-      .map((cat) => {
-        return Array.from(document.querySelectorAll('[aria-labelledby="' + cat + '"] ol li')).map(
-          (res) => {
-            return {
-              rank: res.querySelector(".ResultsStats-index span")
-                ? res.querySelector(".ResultsStats-index span").innerText.split(".")[0]
-                : "",
-              speciesCode: res
-                .querySelector(".ResultsStats-action a")
-                .href.split("/map/")[1]
-                .split("?")[0],
-              commonName: res
-                .querySelector(".SpecimenHeader-joined" + (cat == "hybrids" ? "" : " a"))
-                .innerHTML.replace(/\r?\n|\r/g, "")
-                .replace(/\t/g, "")
-                .split(" <em")[0],
-              sciName: res.querySelector(
-                ".SpecimenHeader-joined" + (cat == "hybrids" ? "" : " a") + " em"
-              )
-                ? res.querySelector(
-                    ".SpecimenHeader-joined" + (cat == "hybrids" ? "" : " a") + " em"
-                  ).innerText
-                : "",
-              frequency: res.querySelector(".ResultsStats-stats .Heading").innerText,
-              exoticCategory: res.querySelector(".ResultsStats-title button")
-                ? res.querySelector(".ResultsStats-title button").title.split("Exotic: ")[1]
-                : "Native",
-            };
-          }
-        );
-      })
-      .flat();
-
-    if (data.length > 1) {
-      const array = [Object.keys(data[0])]
-        .concat(data)
-        .map((it) => {
-          return Object.values(it).join(",").toString();
-        })
-        .join("\n");
-
-      const csvContent = "\uFEFF" + array; // Adding BOM for proper UTF-8 encoding
-      const encodedUri = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
-
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      const filename = window.location.href.split("?")[1].substring(0, 190);
-      link.setAttribute("download", filename + ".csv");
-      link.click();
-    } else {
-      alert("No data to download. Make sure the targets list is displayed");
-    }
+(() => {
+  "use strict";
+  const printButton = document.querySelector(".Button.Button--small.Button--hollow");
+  if (printButton) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "Button Button--small Button--hollow";
+    button.style.marginLeft = "2px";
+    button.textContent = "Download (csv)";
+    printButton.parentElement.append(button);
+    button.addEventListener("click", () => Zoziologie.runAction(button, () => {
+      const categories = ["native-and-naturalized", "exotic-provisional", "exotic-escapee", "hybrids"];
+      const rows = categories.flatMap((category) => Array.from(
+        document.querySelectorAll(`[aria-labelledby="${category}"] ol li`), (row) => {
+          const name = row.querySelector(`.SpecimenHeader-joined${category === "hybrids" ? "" : " a"}`);
+          const commonName = name.cloneNode(true);
+          commonName.querySelector("em")?.remove();
+          return {
+            rank: row.querySelector(".ResultsStats-index span")?.textContent.split(".")[0] ?? "",
+            speciesCode: new URL(row.querySelector(".ResultsStats-action a").href).pathname.split("/map/")[1],
+            commonName: commonName.textContent.trim(),
+            sciName: name.querySelector("em")?.textContent.trim() ?? "",
+            frequency: row.querySelector(".ResultsStats-stats .Heading").textContent.trim(),
+            exoticCategory: row.querySelector(".ResultsStats-title button")?.title.split("Exotic: ")[1] ?? "Native",
+          };
+        }
+      ));
+      Zoziologie.downloadCSV(rows, location.search.slice(1) || "targets");
+    }));
   }
-});
 
-// Find the .GridFlex-cell that contains the select element
-const container = document.querySelector("#targets-comparison-region").closest(".GridFlex-cell");
+  const select = document.querySelector("#targets-comparison-region");
+  if (!select) return;
+  const container = select.closest(".GridFlex-cell");
+  const wrapper = document.createElement("div");
+  wrapper.style.cssText = "display:flex;gap:8px";
+  select.before(wrapper);
+  wrapper.append(select);
+  const toggle = document.createElement("button");
+  toggle.type = "button";
+  toggle.className = "Button";
+  toggle.textContent = "Search regions";
+  toggle.setAttribute("aria-expanded", "false");
+  toggle.setAttribute("aria-controls", "zoziologie-region-search");
+  wrapper.append(toggle);
 
-// Create a wrapper div for flex alignment
-const wrapper = document.createElement("div");
-wrapper.style.display = "flex";
-wrapper.style.gap = "8px"; // Adds spacing between elements
-
-// Move the select element inside the wrapper
-const select = document.getElementById("targets-comparison-region");
-select.parentNode.insertBefore(wrapper, select);
-wrapper.appendChild(select);
-
-// Create the button
-const button = document.createElement("button");
-button.className = "Button";
-button.style.padding = "0.5em 1em";
-button.setAttribute("type", "button");
-button.innerHTML = `
-    <svg role="presentation" class="Icon Icon--search">
-        <use xlink:href="#Icon--search"></use>
-    </svg>
-`;
-
-// Append the button inside the wrapper
-wrapper.appendChild(button);
-
-const searchContainer = document.createElement("div");
-searchContainer.className = "Suggest";
-searchContainer.style.display = "none";
-searchContainer.innerHTML = `
-<div role="combobox" aria-expanded="false" class="Suggest-container">
-  <div class="Suggest-icon">
-    <svg role="presentation" class="Icon Icon--search">
-      <use xlink:href="#Icon--search"></use>
-    </svg>
-  </div> 
-  <div class="Suggest-inputContainer">
-    <input type="text" name="region" id="region-search" placeholder="Enter a region" dir="auto" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-labelledby="targets-region-input" class="Suggest-input">
-  </div> 
-  <div class="Suggest-reset">
-    <button type="button" id="clear-search">
-      <svg role="presentation" class="Icon Icon--close">
-        <use xlink:href="#Icon--close"></use>
-      </svg> 
-      <span class="is-visuallyHidden">Clear</span>
-    </button>
-  </div> 
-  <div role="listbox" id="Suggest-dropdown" class="Suggest-dropdown" style="display: none;">
-    <div class="Suggest-suggestions" id="Suggest-dropdown-inner" > 
-      <div class="Suggest-empty">
-        <span>No Matches</span>
+  const search = document.createElement("div");
+  search.id = "zoziologie-region-search";
+  search.className = "Suggest";
+  search.hidden = true;
+  search.innerHTML = `
+    <div class="Suggest-container">
+      <div class="Suggest-inputContainer">
+        <input type="search" class="Suggest-input" aria-label="Search comparison regions" placeholder="Enter a region" autocomplete="off" spellcheck="false">
       </div>
-    </div>
-  </div>
-</div>
-  `;
+      <button type="button" class="Button Button--small">Clear</button>
+      <div class="Suggest-dropdown" hidden>
+        <div class="Suggest-suggestions"></div>
+      </div>
+      <span role="status" aria-live="polite"></span>
+    </div>`;
+  container.append(search);
+  const input = search.querySelector("input");
+  const dropdown = search.querySelector(".Suggest-dropdown");
+  const suggestions = search.querySelector(".Suggest-suggestions");
+  const status = search.querySelector("[role=status]");
+  let timer;
+  let controller;
 
-// Insert the search bar below the button
-container.appendChild(searchContainer);
-
-const input = searchContainer.querySelector("#region-search");
-const dropdown = searchContainer.querySelector("#Suggest-dropdown");
-const dropdown_inner = searchContainer.querySelector("#Suggest-dropdown-inner");
-const selectTarget = document.getElementById("targets-comparison-region");
-
-// Event listener for search input
-input.addEventListener("input", function () {
-  const query = input.value.trim();
-  if (query.length > 2) {
-    fetchRegions(query);
-  } else {
-    dropdown_inner.innerHTML = "";
+  function clearSearch() {
+    clearTimeout(timer);
+    controller?.abort();
+    suggestions.replaceChildren();
+    dropdown.hidden = true;
+    status.textContent = "";
   }
-});
 
-// Clear input when reset button is clicked
-searchContainer.querySelector("#clear-search").addEventListener("click", function () {
-  input.value = "";
-  dropdown_inner.innerHTML = "";
-});
-
-// Add event listener to button
-button.addEventListener("click", () => {
-  searchContainer.style.display = searchContainer.style.display === "none" ? "block" : "none";
-});
-
-// Function to fetch search results from eBird API
-function fetchRegions(query) {
-  const apiKey = "jfekjedvescr"; // Replace with your actual API key
-  const url = `https://api.ebird.org/v2/ref/region/find?key=${apiKey}&q=${encodeURIComponent(
-    query
-  )}`;
-
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      dropdown.style.display = "block";
-
-      console.log(dropdown_inner);
-
-      dropdown_inner.innerHTML = ""; // Clear old results
-      if (data.length === 0) {
-        dropdown_inner.innerHTML = "<span class='Suggestion-text'>No results found</span>";
-        return;
+  input.addEventListener("input", () => {
+    clearSearch();
+    const query = input.value.trim();
+    if (query.length < 3) return;
+    controller = new AbortController();
+    const signal = controller.signal;
+    timer = setTimeout(async () => {
+      status.textContent = "Searching…";
+      try {
+        // Region finder key retained from the existing eBird integration.
+        const url = new URL("https://api.ebird.org/v2/ref/region/find");
+        url.search = new URLSearchParams({ key: "jfekjedvescr", q: query });
+        const regions = await Zoziologie.fetchJSON(url, { signal });
+        if (signal.aborted) return;
+        status.textContent = regions.length ? `${regions.length} regions found` : "No regions found";
+        for (const region of regions) {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "Suggest-suggestion";
+          option.textContent = region.name;
+          option.addEventListener("click", () => {
+            let selected = Array.from(select.options).find((item) => item.value === region.code);
+            if (!selected) {
+              selected = new Option(region.name, region.code);
+              select.add(selected);
+            }
+            select.value = region.code;
+            select.dispatchEvent(new Event("change", { bubbles: true }));
+            input.value = region.name;
+            clearSearch();
+          });
+          suggestions.append(option);
+        }
+        dropdown.hidden = !regions.length;
+      } catch (error) {
+        if (!signal.aborted) status.textContent = `Region search failed. ${error.message}`;
       }
-
-      data.forEach((region) => {
-        console.log(region);
-        const suggestion = document.createElement("div");
-        suggestion.className = "Suggest-suggestion";
-        suggestion.setAttribute("role", "option");
-        suggestion.innerHTML = `<span class="Suggestion-text">${region.name}</span>`;
-        suggestion.addEventListener("click", function () {
-          document.getElementById("region-search").value = region.name;
-          dropdown_inner.innerHTML = ""; // Hide suggestions after selection
-          dropdown.style.display = "none";
-          // Create a new option
-          const newOption = document.createElement("option");
-          newOption.value = region.code; // Set the value
-          newOption.textContent = region.name; // Set the text
-          newOption.selected = true;
-          selectTarget.appendChild(newOption);
-        });
-        dropdown_inner.appendChild(suggestion);
-      });
-    })
-    .catch((error) => console.error("Error fetching regions:", error));
-}
+    }, 250);
+  });
+  search.querySelector("button").addEventListener("click", () => {
+    input.value = "";
+    clearSearch();
+    input.focus();
+  });
+  toggle.addEventListener("click", () => {
+    search.hidden = !search.hidden;
+    toggle.setAttribute("aria-expanded", String(!search.hidden));
+    if (search.hidden) clearSearch();
+    else input.focus();
+  });
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") clearSearch();
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      suggestions.querySelector("button")?.focus();
+    }
+  });
+})();

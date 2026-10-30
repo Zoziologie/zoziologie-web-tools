@@ -1,8 +1,10 @@
-# Zoziologie Chrome Extension
+# Zoziologie Web Tools
 
-A set of tools to make your life easier on eBird and Biolovision (ornitho, faune-...)
+A browser extension with export and navigation tools for eBird, Macaulay Library, and Biolovision (ornitho, faune-...).
 
-- [Zoziologie Chrome Extension](#zoziologie-chrome-extension)
+Source: [Zoziologie/zoziologie-web-tools](https://github.com/Zoziologie/zoziologie-web-tools). See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
+- [Zoziologie Web Tools](#zoziologie-web-tools)
   - [How to install?](#how-to-install)
   - [eBird](#ebird)
     - [Export Target as CSV](#export-target-as-csv)
@@ -17,11 +19,11 @@ A set of tools to make your life easier on eBird and Biolovision (ornitho, faune
   - [Biolovision](#biolovision)
     - [Export Species List](#export-species-list)
     - [Export Summary](#export-summary)
-    - [Export Lit](#export-lit)
+    - [Export List](#export-list)
 
 ## How to install?
 
-Install the extension directly from the [chrome web store](<[Zoziologie](https://chrome.google.com/webstore/detail/zoziologie/ikoemgmlmapdnjkphgficpdlkfiepodh)>)!
+Install the extension directly from the [Chrome Web Store](https://chrome.google.com/webstore/detail/zoziologie/ikoemgmlmapdnjkphgficpdlkfiepodh)!
 
 [![image](https://user-images.githubusercontent.com/7571260/213334689-48582f00-4a24-46b6-a56f-3b1b230cb456.png)](https://chrome.google.com/webstore/detail/zoziologie/ikoemgmlmapdnjkphgficpdlkfiepodh)
 
@@ -123,7 +125,7 @@ Create CSV files from Biolovision **Summary** (`m_id=32`) pages using the csv bu
 
 ![image](assets/summary.png)
 
-### Export Lit
+### Export List
 
 Create CSV files from Biolovision **List** (`m_id=94`) pages using the csv button on the export row. This output page is selected on the last tab of the **search engine** page (`m_id=8`). The exported table contains the following column:
 
@@ -132,3 +134,11 @@ Create CSV files from Biolovision **List** (`m_id=94`) pages using the csv butto
 | 06.01.24 | Widensolen (village) / Widensolen (68) | <https://www.faune-grandest.org/index.php?m_id=52&id=1153273> | 2        | Bécasses des bois | Scolopax rusticola | Remarque :observation de mon salon en vol |
 
 _No screen shot_
+
+## Development
+
+See [DEVELOPMENT.md](DEVELOPMENT.md) for the file layout, automated checks, manual verification, and release steps. The extension runs directly from this repository; no build step or runtime dependencies are required.
+
+Load a local copy from `chrome://extensions`: enable **Developer mode**, click **Load unpacked**, and select this folder. After editing, reload the extension and refresh the affected website tab.
+
+CSV exports use UTF-8 with a BOM, standard quoted fields, and CRLF record separators. Commas, quotes, newlines, and non-ASCII names are preserved. Single-result exports are supported. Trip exports include columns appearing in later rows, so optional observation fields are not lost. Biolovision list exports preserve the site's displayed date text rather than guessing a date from the browser's locale; remarks retain their original punctuation and line breaks.

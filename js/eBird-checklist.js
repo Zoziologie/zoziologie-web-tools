@@ -1,53 +1,45 @@
-document.querySelectorAll(".Observation").forEach(function (e) {
-  e.getElementsByClassName("Observation-species")[0].insertAdjacentHTML(
-    "afterend",
-    `
-      <div style="grid-column: 5/6;">
-        <a class="zoziology-ebird-link" value="${e.id}">
-					<svg class="Icon Icon--link Icon--sm" role="presentation"><use xlink:href="#Icon--link"></use></svg>
-					<span class="is-visuallyHidden">Copy link</span>
-				</a>
-      </div>`
-  );
-});
+(() => {
+  "use strict";
+  document.querySelectorAll(".Observation").forEach((observation) => {
+    const cell = document.createElement("div");
+    cell.style.gridColumn = "5/6";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "zoziology-ebird-link Button--link";
+    button.setAttribute("aria-label", "Copy link to this observation");
+    button.innerHTML = '<svg class="Icon Icon--link Icon--sm" role="presentation"><use xlink:href="#Icon--link"></use></svg>';
+    cell.append(button);
+    observation.querySelector(".Observation-species").after(cell);
+    button.addEventListener("click", () => Zoziologie.runAction(button, async () => {
+      const url = new URL(location.href);
+      url.hash = observation.id;
+      await navigator.clipboard.writeText(url.href);
+      document.querySelector("#zoziologie-copied")?.remove();
+      const message = document.createElement("span");
+      message.id = "zoziologie-copied";
+      message.setAttribute("role", "status");
+      message.style.cssText = "color:#1c6900;font-size:.88rem";
+      message.textContent = "Copied to clipboard.";
+      button.after(message);
+    }));
+  });
 
-document.addEventListener("click", function (e) {
-  const target = e.target.closest(".zoziology-ebird-link");
-  if (target) {
-    const text = window.location.href.split("#")[0] + "#" + target.getAttribute("value");
-    if (document.querySelector("#copied")) {
-      document.querySelector("#copied").remove();
-    }
-    navigator.clipboard.writeText(text).then(function () {
-      //alert('URL copied to clipboard: ' + text);
-      e.target.insertAdjacentHTML(
-        "afterend",
-        '<span id="copied" style="color: #1c6900;font-size: .88rem;"><svg alt="" aria-hidden="true" class="Icon Icon--check Icon--sm"><use xlink:href="#Icon--check"></use></svg><span style="margin-left:2px;">Copied to clipboard.</span></span>'
-      );
-    });
+  const editLocation = document.querySelector('a[href*="locID="]');
+  if (!editLocation) return;
+  const locId = new URL(editLocation.href).searchParams.get("locID");
+  const link = document.createElement("a");
+  link.href = `/mylocations/edit/${encodeURIComponent(locId)}`;
+  link.className = "Button Button--tiny Button--hollow u-showForMedium";
+  link.style.cssText = "align-self:center;flex-shrink:0;padding:.25rem .4rem;margin-left:5px;margin-bottom:0";
+  link.textContent = "Manage Location";
+  editLocation.after(link);
+  const tools = document.querySelector("#checklist-tools ul");
+  if (tools) {
+    const item = document.createElement("li");
+    const menuLink = link.cloneNode(true);
+    menuLink.className = "ToggleDropdown-panel-link";
+    menuLink.removeAttribute("style");
+    item.append(menuLink);
+    tools.append(item);
   }
-});
-
-var els2 = document.querySelector(
-  "#main > div.Page-section.Page-section--primaryLight.Page-section--grid-heading > div > div > div:nth-child(2) > section > div > div.GridFlex-cell.u-sizeFill > div.GridFlex.GridFlex--alignMiddle > div > div > a"
-);
-if (els2) {
-  const locid = els2.href.split("locID=")[1].split("&")[0];
-  els2.insertAdjacentHTML(
-    "afterend",
-    `
-  <a href="/mylocations/edit/${locid}" class="Button Button--tiny Button--hollow u-showForMedium" style="align-self:center; flex-shrink:0; padding:.25rem .4rem; margin-left:5px; margin-bottom:0px;">
-  Manage Location
-</a>`
-  );
-  var els3 = document.querySelector("#checklist-tools");
-  els3.querySelectorAll("li")[3].insertAdjacentHTML(
-    "afterend",
-    `
-<li>												
-<a href="/mylocations/edit/${locid}" class="ToggleDropdown-panel-link">
-  <strong>Manage Location</strong>
-</a>
-</li>`
-  );
-}
+})();
