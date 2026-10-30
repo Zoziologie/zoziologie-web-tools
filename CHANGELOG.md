@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.8.1 — 30 October 2026
+
+- Rename the extension to Zoziologie Web Tools and clarify its Chrome Web Store summary.
+
 ## 5.8.0 — 30 October 2026
 
 - Rename the repository and development package to `zoziologie-web-tools`; retain the Zoziologie extension name and existing features.

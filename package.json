@@ -1,6 +1,6 @@
 {
   "name": "zoziologie-web-tools",
-  "version": "5.8.0",
+  "version": "5.8.1",
   "private": true,
   "description": "Toolkit for web-birding on eBird and Biolovision",
   "scripts": {

@@ -1,7 +1,7 @@
 {
-  "name": "Zoziologie",
-  "version": "5.8.0",
-  "description": "Toolkit for web-birding",
+  "name": "Zoziologie Web Tools",
+  "version": "5.8.1",
+  "description": "CSV exports and navigation tools for eBird, Macaulay Library, and Biolovision.",
   "permissions": [],
   "action": {
     "default_icon": {
