@@ -51,15 +51,16 @@
     search.className = "Suggest";
     search.hidden = true;
     search.innerHTML = `
-      <div class="Suggest-container">
-        <div class="Suggest-inputContainer">
-          <input type="search" class="Suggest-input" aria-label="Search comparison regions" placeholder="Enter a region" autocomplete="off" spellcheck="false">
+      <div class="Suggest-container" style="margin-top:8px">
+        <div style="display:flex;gap:8px;align-items:stretch">
+          <input type="search" class="Suggest-input" aria-label="Search comparison regions" placeholder="Type a country, state or county" autocomplete="off" spellcheck="false"
+            style="flex:1;min-width:0;padding:8px 10px;border:1px solid #c6c6c6;border-radius:3px;background:#fff;font:inherit">
+          <button type="button" class="Button Button--small" style="margin:0">Clear</button>
         </div>
-        <button type="button" class="Button Button--small">Clear</button>
+        <span role="status" aria-live="polite" style="display:block;min-height:1.3em;margin-top:4px;font-size:.85rem;color:#5c6670"></span>
         <div class="Suggest-dropdown" hidden>
           <div class="Suggest-suggestions"></div>
         </div>
-        <span role="status" aria-live="polite"></span>
       </div>`;
     container.append(search);
     const input = search.querySelector("input");

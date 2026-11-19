@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Targets: the region search box now has a proper input border and its result count no longer overlaps the Clear button; its hint says it finds countries, states and counties.
+- `npm run screenshots` builds the store screenshots from page captures; see DEVELOPMENT.md.
+
 ## 5.9.0 — 19 November 2026
 
 - **Toolbar menu.** Clicking the extension icon now explains every tool, grouped by website, shows whether the extension is active in the current tab and which tools apply there, and offers a reload or site access when it is not running.

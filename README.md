@@ -55,7 +55,7 @@ Export your [Target](https://ebird.org/targets) list into a [comma-separated val
 
 \* one of `Native`, `Naturalized`, `Provisional`, `Escapee`. Note that hybrids are identifiable from `commonName`.
 
-![image](assets/target.png)
+![Targets page with the Download (csv) and Search regions buttons](assets/store/2-ebird-targets.png)
 
 ### Search for Region as target
 
@@ -91,7 +91,7 @@ Each row correspond to a checklist, similar to the checklists view
 | --------- | ---------- | ---------- | --------- | ------- | ---------------- | ---------- | -------------------------------------------------------------- | ----------- | ---------- | ----------- | ------------ | ---------------- | ---------------- | --------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------- | --------- | ----------- | ---------- |
 | L40063346 | S212444111 | 1          | 08.Feb.25 | 18:25   | 08.02.2025 18:25 | S212444111 | West Coast Road, Cape Town, Western Cape, ZA (-33.586, 18.399) | -33.5855343 | 18.3994637 | ZA          | South Africa | Western Cape     | ZA-WC            | FALSE     | West Coast Road, Cape Town, Western Cape, ZA (-33.586, 18.399) | West Coast Road, Cape Town, Western Cape, ZA (-33.586, 18.399), Western Cape, ZA | L40063346 | -33.5855343 | 18.3994637 |
 
-![image](assets/tripreport.png)
+![Trip report with the Download (csv) menu](assets/store/3-ebird-trip-report.png)
 
 ### Export Barchart
 
@@ -119,7 +119,7 @@ Download any photo on the Macaulay Library at 2400 px wide resolution (the origi
 
 Files are saved under their Macaulay number, for example `ML664758856.jpg`, once you click **Allow downloads** under Media download in the toolbar menu (a one-time browser permission). Until then, the button opens the file in a new tab.
 
-![image](assets/macaulay.png)
+![Macaulay Library photo page with the Download 2400px button](assets/store/4-macaulay-download.png)
 
 ## Biolovision
 
@@ -135,7 +135,7 @@ Create csv files from Biolovision **Specie List** (`m_id=94`) pages using the cs
 | -------- | ------------- | ----------------- | ------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
 | 31       | Greylag Goose | Anser anser       | 06.01.2020    | certain    | <https://www.ornitho.ch/index.php?m_id=94&showback=stor&p_c=5&p_cc=-1&sp_tg=1&sp_DateSynth=02.06.2020&sp_DChoice=offset&sp_DOffset=5&sp_SChoice=species&sp_S=60&sp_PChoice=canton&sp_cC=000100110000000000000011001001100000000000000000000&sp_FChoice=list&sp_FDisplay=DATE_PLACE_SPECIES&sp_DFormat=DESC> | <https://www.ornitho.ch/index.php?m_id=81&frmSpecies=60&sp_tg=1&showback=stor> | <https://www.ornitho.ch/index.php?m_id=15&showback=stor&backlink=skip&frmSpecies=60&sp_tg=1> |
 
-![image](assets/species.png)
+![Biolovision species list with the CSV export button](assets/store/5-biolovision-export.png)
 
 ### Export Summary
 

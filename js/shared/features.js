@@ -57,7 +57,7 @@
     },
     {
       id: "ebirdRegionSearch", site: "ebird", name: "Any comparison region",
-      how: "On Targets, Search regions lets you compare with any region or hotspot, not only parent regions.",
+      how: "On Targets, Search regions lets you compare with any country, state or county, not only parent regions.",
       open: "https://ebird.org/targets", test: path(/targets/),
     },
     {

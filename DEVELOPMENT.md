@@ -16,7 +16,9 @@ Zoziologie is a Manifest V3 content-script extension for Chrome and Firefox, bui
 | `js/background.js` | Saves Macaulay media as `ML<number>.jpg/.mp3` with the optional `downloads` permission |
 | `css/biolovision-hide.css` | Hide decorative page elements before rendering |
 | `logo/` | Extension icons |
-| `assets/` | README screenshots; not needed in a release package |
+| `assets/` | README and store images; not needed in a release package. `assets/store/` is generated, `assets/raw/` holds the page captures it is built from |
+| `scripts/screenshots.mjs` | Builds the 1280×800 store screenshots (`npm run screenshots`) |
+| `.claude/skills/store-screenshots/` | How Claude recaptures the raw pages in a signed-in Chrome and republishes the screenshots |
 | `tests/extension.test.cjs` | DOM fixtures, mocked API responses, and manifest checks |
 
 Every manifest entry loads `js/shared/core.js` first. Content scripts share the `Zoziologie` namespace in the extension's isolated world; `core.js` only initialises once per page. Each feature keeps its other variables inside an immediately invoked function.
@@ -97,12 +99,17 @@ Load this folder using **Load unpacked** in `chrome://extensions` (or as a tempo
 - Toolbar menu: on a Targets page it shows "Active on this eBird page"; on a tab opened before reloading the extension it offers Reload page. Turn a tool off, reload the page and confirm its control is gone.
 - Repeat the export checks once in Firefox (temporary add-on), including a download and the clipboard link on a checklist.
 
+## Store screenshots
+
+`npm run screenshots` turns the captures in `assets/raw/` into the five 1280×800 images in `assets/store/` (Chrome Web Store, Firefox Add-ons and README). The toolbar menu image is rendered from `popup/popup.html` with stubbed browser APIs, so it follows the code. Each scene in `scripts/screenshots.mjs` sets its capture, the crop anchor and amber boxes around the extension's controls. The raw captures need a signed-in browser (eBird's bot check and account pages), so they are retaken by hand or by Claude following `.claude/skills/store-screenshots/SKILL.md`; ask Claude to "update the store screenshots".
+
 ## Release
 
 Complete the automated and manual checks, update the version in `manifest.json` and `package.json`, and refresh the lockfile with `npm install --package-lock-only`. Package only runtime files:
 
 ```sh
-npm run package   # zoziologie.zip with manifest.json, js, css, logo and popup
+npm run package       # zoziologie.zip with manifest.json, js, css, logo and popup
+npm run screenshots   # if the pages or menu changed: refresh assets/store/
 ```
 
 Upload the same ZIP to the Chrome Web Store (existing listing) and to addons.mozilla.org. AMO asks for source code only for minified or generated files; this extension ships its sources as is. Installation and releases remain manual.
