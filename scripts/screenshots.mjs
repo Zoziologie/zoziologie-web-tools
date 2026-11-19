@@ -33,10 +33,10 @@ const HEIGHT = 800;
  *   (measure them on the capture, e.g. with getBoundingClientRect() before taking it)
  */
 const SCENES = [
-  { name: "1-toolbar-menu", background: "ebird-targets.jpg", position: "left top", popup: { url: "https://ebird.org/targets?r1=CH" } },
+  { name: "1-toolbar-menu", background: "ebird-barchart.jpg", position: "right top", popup: { url: "https://ebird.org/barchart?r=OM" } },
   { name: "2-ebird-targets", background: "ebird-targets.jpg", position: "left top", highlight: [[607, 385, 103, 55], [1125, 610, 114, 30]] },
-  { name: "3-ebird-trip-report", background: "ebird-tripreport.jpg", position: "left top", highlight: [[273, 389, 320, 190]] },
-  { name: "4-macaulay-download", background: "macaulay-photo.jpg", highlight: [[1160, 556, 158, 32]] },
+  { name: "3-ebird-trip-report", background: "ebird-tripreport.jpg", position: "left top", highlight: [[273, 305, 320, 190]] },
+  { name: "4-macaulay-download", background: "macaulay-photo.jpg", highlight: [[1166, 716, 145, 24]] },
   { name: "5-biolovision-export", background: "biolovision-species.jpg", position: "left top", highlight: [[305, 244, 270, 28]] },
 ];
 
@@ -93,6 +93,64 @@ function sceneHTML({ background, position = "center top" }, popup) {
   </body></html>`;
 }
 
+/*
+ * Chrome Web Store promo tiles: small 440×280 and marquee 1400×560 (24-bit, no transparency).
+ * They reuse the logo, the rendered toolbar menu and the Targets capture.
+ */
+const TILES = [
+  { name: "promo-small", width: 440, height: 280, html: smallTile },
+  { name: "promo-marquee", width: 1400, height: 560, html: marqueeTile },
+];
+
+const TILE_CSS = `
+  html, body { margin: 0; overflow: hidden; }
+  body { background: radial-gradient(120% 140% at 0% 0%, #2c4256 0%, #18232e 60%, #121a22 100%); color: #fff;
+    font-family: -apple-system, "SF Pro Display", "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+  .accent { color: #f4b740; }`;
+
+function smallTile({ logo }) {
+  return `<!doctype html><html><head><meta charset="utf-8"><style>${TILE_CSS}
+    body { width: 440px; height: 280px; display: grid; grid-template-columns: 132px 1fr; align-items: center; gap: 18px; padding: 0 30px; box-sizing: border-box; }
+    img { width: 132px; height: 132px; }
+    h1 { margin: 0; font-size: 38px; line-height: 1; font-weight: 800; letter-spacing: -.02em; }
+    h2 { margin: 4px 0 14px; font-size: 25px; line-height: 1.1; font-weight: 500; color: #dfe6ec; }
+    p { margin: 0; font-size: 15px; line-height: 1.35; font-weight: 600; }
+  </style></head><body>
+    <img src="data:image/png;base64,${logo}">
+    <div><h1>Zoziologie</h1><h2>Web Tools</h2><p class="accent">eBird · Macaulay Library<br>ornitho · faune-france</p></div>
+  </body></html>`;
+}
+
+function marqueeTile({ logo, screenshot }) {
+  return `<!doctype html><html><head><meta charset="utf-8"><style>${TILE_CSS}
+    body { width: 1400px; height: 560px; position: relative; }
+    .text { position: absolute; left: 72px; top: 70px; width: 560px; }
+    .brand { display: flex; align-items: center; gap: 22px; }
+    .brand img { width: 104px; height: 104px; }
+    h1 { margin: 0; font-size: 58px; line-height: 1; font-weight: 800; letter-spacing: -.02em; }
+    h2 { margin: 6px 0 0; font-size: 30px; font-weight: 500; color: #dfe6ec; }
+    ul { list-style: none; margin: 44px 0 0; padding: 0; display: grid; gap: 16px; font-size: 25px; line-height: 1.25; font-weight: 500; }
+    li { display: flex; gap: 14px; }
+    li::before { content: "✓"; color: #f4b740; font-weight: 800; }
+    .window { position: absolute; left: 640px; top: 52px; width: 704px; border-radius: 12px; overflow: hidden; background: #f3f3f3;
+      box-shadow: 0 24px 60px rgb(0 0 0 / .5), 0 2px 10px rgb(0 0 0 / .3); }
+    .bar { height: 28px; display: flex; align-items: center; gap: 7px; padding: 0 12px; }
+    .bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+    .bar i:nth-child(2) { background: #febc2e; } .bar i:nth-child(3) { background: #28c840; }
+    .window img { display: block; width: 704px; height: 440px; }
+  </style></head><body>
+    <div class="text">
+      <div class="brand"><img src="data:image/png;base64,${logo}"><div><h1>Zoziologie</h1><h2>Web Tools</h2></div></div>
+      <ul>
+        <li>CSV exports of eBird targets, trip reports and bar charts</li>
+        <li>Macaulay Library photo and sound downloads</li>
+        <li>Exports for ornitho and faune-france portals</li>
+      </ul>
+    </div>
+    <div class="window"><div class="bar"><i></i><i></i><i></i></div><img src="data:image/png;base64,${screenshot}"></div>
+  </body></html>`;
+}
+
 /** Place highlight boxes given in capture pixels, following the object-fit: cover crop. */
 function placeHighlights(boxes) {
   const img = document.querySelector(".bg");
@@ -131,6 +189,24 @@ async function main() {
       await page.screenshot({ path: join(OUT, `${scene.name}.png`), type: "png" });
       await page.close();
       console.log(`assets/store/${scene.name}.png`);
+    }
+
+    const assets = {
+      logo: readFileSync(join(root, "logo/logo_300.png")).toString("base64"),
+      // The marquee shows the finished Macaulay scene (photo plus highlighted button).
+      screenshot: readFileSync(join(OUT, "4-macaulay-download.png")).toString("base64"),
+    };
+    for (const tile of TILES) {
+      const file = join(scratch, `${tile.name}.html`);
+      writeFileSync(file, tile.html(assets));
+      const page = await browser.newPage();
+      await page.setViewport({ width: tile.width, height: tile.height, deviceScaleFactor: 1 });
+      await page.goto(`file://${file}`);
+      await page.evaluate(() => Promise.all(Array.from(document.images, (img) => img.decode())));
+      // Opaque page, so the PNG is 24-bit RGB as the Chrome Web Store requires.
+      await page.screenshot({ path: join(OUT, `${tile.name}.png`), type: "png" });
+      await page.close();
+      console.log(`assets/store/${tile.name}.png`);
     }
   } finally {
     await browser.close();

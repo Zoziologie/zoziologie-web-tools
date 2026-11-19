@@ -101,7 +101,7 @@ Load this folder using **Load unpacked** in `chrome://extensions` (or as a tempo
 
 ## Store screenshots
 
-`npm run screenshots` turns the captures in `assets/raw/` into the five 1280×800 images in `assets/store/` (Chrome Web Store, Firefox Add-ons and README). The toolbar menu image is rendered from `popup/popup.html` with stubbed browser APIs, so it follows the code. Each scene in `scripts/screenshots.mjs` sets its capture, the crop anchor and amber boxes around the extension's controls. The raw captures need a signed-in browser (eBird's bot check and account pages), so they are retaken by hand or by Claude following `.claude/skills/store-screenshots/SKILL.md`; ask Claude to "update the store screenshots".
+`npm run screenshots` turns the captures in `assets/raw/` into the five 1280×800 screenshots and the two Chrome Web Store promo tiles (440×280 and 1400×560) in `assets/store/`. The toolbar menu image is rendered from `popup/popup.html` with stubbed browser APIs, so it follows the code. Each scene in `scripts/screenshots.mjs` sets its capture, the crop anchor and amber boxes around the extension's controls. The raw captures need a signed-in browser (eBird's bot check and account pages), so they are retaken by hand or by Claude following `.claude/skills/store-screenshots/SKILL.md`; ask Claude to "update the store screenshots".
 
 ## Release
 
