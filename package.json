@@ -1,11 +1,13 @@
 {
   "name": "zoziologie-web-tools",
-  "version": "5.8.1",
+  "version": "5.9.0",
   "private": true,
-  "description": "Toolkit for web-birding on eBird and Biolovision",
+  "description": "Exports and shortcuts for eBird, Macaulay Library and Biolovision (Chrome and Firefox)",
   "scripts": {
     "test": "node --test",
-    "check": "node --check js/shared/core.js && node --test"
+    "check": "node --check js/shared/core.js && node --test",
+    "lint:firefox": "npx --yes web-ext@8 lint --source-dir . --ignore-files \"node_modules/**\" \"tests/**\" \"assets/**\" \"*.md\" \"package*.json\" \"*.zip\" \"output/**\" \".github/**\"",
+    "package": "rm -f zoziologie.zip && zip -qr zoziologie.zip manifest.json js css logo popup && unzip -l zoziologie.zip | tail -1"
   },
   "devDependencies": {
     "jsdom": "^27.0.0"

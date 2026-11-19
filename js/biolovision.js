@@ -1,6 +1,13 @@
 (() => {
   "use strict";
   const params = new URLSearchParams(location.search);
+  // Default on: hide banners before the first paint, then undo it if the user turned Tidy layout off.
+  document.documentElement.classList.add("zoziologie-tidy");
+  let enabled = { export: true, grid: true, tidy: true };
+  const ready = Zoziologie.settings.then(({ disabled }) => {
+    enabled = { export: !disabled.includes("biolovisionExport"), grid: !disabled.includes("biolovisionGrid"), tidy: !disabled.includes("biolovisionTidy") };
+    if (!enabled.tidy) document.documentElement.classList.remove("zoziologie-tidy");
+  });
 
   function exportRows() {
     const rows = [];
@@ -53,7 +60,10 @@
         });
       });
     }
-    Zoziologie.downloadCSV(rows, location.search.slice(1) || document.title || "export");
+    // e.g. ornitho.ch_species_2026-11-18
+    const kind = { species: "species", synth: "summary", list: "observations" }[params.get("sp_FChoice")] ?? "export";
+    const today = new Date().toLocaleDateString("sv");
+    Zoziologie.downloadCSV(rows, `${location.hostname.replace(/^www\./, "")}_${kind}_${today}`);
   }
 
   async function openGrid() {
@@ -85,13 +95,13 @@
 
   function start() {
     const box = document.querySelector(".box.flex-box");
-    if (box && ["species", "synth", "list"].includes(params.get("sp_FChoice")) && !document.querySelector("#zoziology-export")) {
-      box.insertAdjacentHTML("beforeend", `<div class="row"><div class="col-sm-20"><div class="flex-title">Export</div></div><div class="col-sm-80"><button type="button" class="export_link bi bi-txt" id="zoziology-export" title="Download CSV" aria-label="Download CSV" style="margin-right:.2rem;cursor:pointer"></button></div></div>`);
+    if (enabled.export && box && ["species", "synth", "list"].includes(params.get("sp_FChoice")) && !document.querySelector("#zoziology-export")) {
+      box.insertAdjacentHTML("beforeend", `<div class="row"><div class="col-sm-20"><div class="flex-title">Export</div></div><div class="col-sm-80"><button type="button" class="export_link bi bi-txt" id="zoziology-export" title="Download these results as CSV (Zoziologie)" aria-label="Download these results as CSV" style="margin-right:.2rem;cursor:pointer"></button></div></div>`);
       const button = box.querySelector("#zoziology-export");
       button.addEventListener("click", () => Zoziologie.runAction(button, exportRows));
     }
 
-    if (params.get("m_id") === "620") {
+    if (enabled.grid && params.get("m_id") === "620") {
       document.querySelector(".box")?.remove();
       document.querySelector(".no_access")?.remove();
       const grid = document.querySelector("#gsearch");
@@ -103,13 +113,17 @@
     }
   }
 
-  function observeDynamicContent() {
-    for (const id of ["1164", "1364"]) {
-      const item = document.getElementById(id);
-      if (item && item !== item.parentNode.lastElementChild) item.parentNode.append(item);
+  async function observeDynamicContent() {
+    await ready;
+    if (enabled.tidy) {
+      // Menu entries by module id: search engine first, 1164 and 1364 last.
+      for (const id of ["1164", "1364"]) {
+        const item = document.getElementById(id);
+        if (item && item !== item.parentNode.lastElementChild) item.parentNode.append(item);
+      }
+      const search = document.getElementById("8");
+      if (search && search !== search.parentNode.firstElementChild) search.parentNode.prepend(search);
     }
-    const search = document.getElementById("8");
-    if (search && search !== search.parentNode.firstElementChild) search.parentNode.prepend(search);
 
     start();
     let timer;

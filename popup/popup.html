@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoziologie Web Tools</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="masthead">
+    <img src="../logo/logo_48.png" width="36" height="36" alt="">
+    <div>
+      <h1>Zoziologie Web Tools</h1>
+      <p>Exports and shortcuts for eBird, Macaulay Library and Biolovision</p>
+    </div>
+    <span class="version" id="version"></span>
+  </header>
+
+  <section class="here" id="here" aria-live="polite" hidden></section>
+
+  <main>
+    <div id="sites"></div>
+  </main>
+
+  <div class="applybar" id="applybar" hidden>
+    <span>Reload to apply changes</span>
+    <button type="button" class="button primary" id="reload">Reload page</button>
+  </div>
+
+  <footer>
+    <a href="https://github.com/Zoziologie/zoziologie-web-tools#readme" target="_blank" rel="noopener">Guide</a>
+    <a href="https://github.com/Zoziologie/zoziologie-web-tools/issues" target="_blank" rel="noopener">Report a problem</a>
+    <a href="https://github.com/Zoziologie/zoziologie-web-tools/blob/master/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
+    <a href="https://github.com/sponsors/Zoziologie" target="_blank" rel="noopener">Support</a>
+  </footer>
+
+  <template id="feature-row">
+    <li class="feature">
+      <div class="text">
+        <label class="name"></label>
+        <p class="how"><span class="how-text"></span> <a class="open" target="_blank" rel="noopener">Open<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+      </div>
+      <input type="checkbox" role="switch" class="switch">
+    </li>
+  </template>
+
+  <script src="../js/shared/features.js"></script>
+  <script src="../js/shared/core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

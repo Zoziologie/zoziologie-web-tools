@@ -1,11 +1,12 @@
 # Zoziologie Web Tools
 
-A browser extension with export and navigation tools for eBird, Macaulay Library, and Biolovision (ornitho, faune-...).
+A browser extension for Chrome and Firefox with export and navigation tools for eBird, Macaulay Library, and Biolovision (ornitho, faune-france and regional portals).
 
 Source: [Zoziologie/zoziologie-web-tools](https://github.com/Zoziologie/zoziologie-web-tools). See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 - [Zoziologie Web Tools](#zoziologie-web-tools)
   - [How to install?](#how-to-install)
+  - [Toolbar menu and settings](#toolbar-menu-and-settings)
   - [eBird](#ebird)
     - [Export Target as CSV](#export-target-as-csv)
     - [Search for Region as target](#search-for-region-as-target)
@@ -14,8 +15,8 @@ Source: [Zoziologie/zoziologie-web-tools](https://github.com/Zoziologie/zoziolog
       - [Observation Level](#observation-level)
       - [Checklist Level](#checklist-level)
     - [Export Barchart](#export-barchart)
-    - [Checklist: anchor link to species, Export GPS track and Manage location](#checklist-anchor-link-to-species-export-gps-track-and-manage-location)
-    - [Download Pictures](#download-pictures)
+    - [Checklist: link to a species and Manage location](#checklist-link-to-a-species-and-manage-location)
+    - [Download photos and sounds](#download-photos-and-sounds)
   - [Biolovision](#biolovision)
     - [Export Species List](#export-species-list)
     - [Export Summary](#export-summary)
@@ -26,6 +27,21 @@ Source: [Zoziologie/zoziologie-web-tools](https://github.com/Zoziologie/zoziolog
 Install the extension directly from the [Chrome Web Store](https://chrome.google.com/webstore/detail/zoziologie/ikoemgmlmapdnjkphgficpdlkfiepodh)!
 
 [![image](https://user-images.githubusercontent.com/7571260/213334689-48582f00-4a24-46b6-a56f-3b1b230cb456.png)](https://chrome.google.com/webstore/detail/zoziologie/ikoemgmlmapdnjkphgficpdlkfiepodh)
+
+The Chrome Web Store version also works in Microsoft Edge, Brave and other Chromium browsers.
+
+**Firefox** (140 or newer) is supported from version 5.9.0. The addons.mozilla.org listing is pending; until then, see [DEVELOPMENT.md](DEVELOPMENT.md#firefox) to load it.
+
+## Toolbar menu and settings
+
+Click the Zoziologie bird in the browser toolbar (pin it from the puzzle-piece menu in Chrome) to see:
+
+- **On this page**: whether the extension is active in the current tab and which tools are available there. If the tab was open before installing or updating, or if the browser blocks the site, the menu offers a one-click reload or access request.
+- **Every tool, grouped by website**, with a one-line explanation, a link to the page where it appears and a switch to turn it off. Changes apply after reloading the page.
+
+Settings follow your browser profile, and are synced if browser sync is on. Messages, such as the number of downloaded rows or an error, appear briefly at the bottom right of the page.
+
+<img width="360" alt="Toolbar menu on an eBird Targets page" src="assets/popup.png" />
 
 ## eBird
 
@@ -90,20 +106,26 @@ First row is the normalization factor (i.e., number of checklists). There are 48
 
 ![image](assets/barchart.png)
 
-### Checklist: anchor link to species, Export GPS track and Manage location
+### Checklist: link to a species and Manage location
 
 - **Anchor link to species**: To share a specific sighting within your checklist, click on the link icon at the end of the line to copy the url of this entry on your clipboard. When opening this link, the page will automically scroll to this sighting.
 - **Manage location** (not visible on screenshot below): A new button, next to "Edit Location" will help you to nagivate to the Location page directly.
 
 ![image](assets/checklist.png)
 
-### Download Pictures
+### Download photos and sounds
 
-Download any photos on the Macaulay library at 2400px wide resolution (the original is only available for the author) using the new button "Download 2400".
+Download any photo on the Macaulay Library at 2400 px wide resolution (the original is only available to the author) with the new "Download 2400px" button. On sound pages, "Download MP3" gets the recording.
+
+Files are saved under their Macaulay number, for example `ML664758856.jpg`, once you click **Allow downloads** under Media download in the toolbar menu (a one-time browser permission). Until then, the button opens the file in a new tab.
 
 ![image](assets/macaulay.png)
 
 ## Biolovision
+
+Works on [faune-france.org](https://www.faune-france.org/) and its regional portals (faune-aura, faune-bfc, faune-bretagne, faune-occitanie, faune-paysdelaloire, …), ornitho.ch, .de, .at, .it, .cat, .eus, .lu, .pl, dabasdati.ornitho.lv and data.biolovision.net. The full list is in the toolbar menu. Exports are named after the site, the kind of list and the date, for example `ornitho.ch_observations_2026-11-18.csv`.
+
+The extension also tidies the layout (hides banners and slideshows, puts the search engine first in the menu). Turn this off in the toolbar menu if you prefer the original layout.
 
 ### Export Species List
 
