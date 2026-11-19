@@ -52,7 +52,7 @@ Regional French portals were merged in recent years; old domains such as faune-a
 
 ## Checks
 
-Use Node 22.12 or newer:
+Use Node 22.22, 24.15 or 26 and newer (required by jsdom):
 
 ```sh
 npm ci

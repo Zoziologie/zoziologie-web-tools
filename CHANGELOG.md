@@ -6,6 +6,7 @@
 - `npm run screenshots` builds the store screenshots, promo tiles and README menu image from page captures; a project skill describes how Claude recaptures the pages. New images use the Oman trip report and a Hoopoe photo.
 - README: corrected Biolovision page names (`sp_FChoice`), the region search description and typos; added the location and region shortcuts and a CSV format section; dropped the outdated summary and region-search images.
 - `.gitignore` reorganised; ignores personal Claude Code settings.
+- Dev dependencies: puppeteer-core 25 (fixes the extract-zip, basic-ftp and zod advisories behind the Dependabot alerts) and jsdom 31; Node 22.22+ required for development.
 
 ## 5.9.0 — 19 November 2026
 
