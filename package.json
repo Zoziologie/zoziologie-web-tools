@@ -3,6 +3,7 @@
   "version": "5.9.0",
   "private": true,
   "description": "Exports and shortcuts for eBird, Macaulay Library and Biolovision (Chrome and Firefox)",
+  "license": "MIT",
   "scripts": {
     "test": "node --test",
     "check": "node --check js/shared/core.js && node --test",
