@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "jsdom": "^27.0.0",
-    "puppeteer-core": "^24.43.1"
+    "puppeteer-core": "^25.18.1"
   },
   "engines": {
     "node": ">=22.12"
