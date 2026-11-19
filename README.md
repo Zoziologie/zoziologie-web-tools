@@ -30,7 +30,7 @@ Install the extension directly from the [Chrome Web Store](https://chrome.google
 
 The Chrome Web Store version also works in Microsoft Edge, Brave and other Chromium browsers.
 
-**Firefox** (140 or newer) is supported from version 5.9.0. The addons.mozilla.org listing is pending; until then, see [DEVELOPMENT.md](DEVELOPMENT.md#firefox) to load it.
+**Firefox** (140 or newer) is supported from version 5.9.0: install it from [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/zoziologie-web-tools/) once Mozilla's review is complete, or see [DEVELOPMENT.md](DEVELOPMENT.md#firefox) to load it yourself.
 
 ## Toolbar menu and settings
 
