@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /*
- * Builds the 1280×800 store screenshots in assets/store/ from raw page captures in assets/raw/.
+ * Builds the store images in assets/store/ from raw page captures in assets/raw/: five 1280×800
+ * screenshots, the toolbar menu on its own (for the README) and two Chrome Web Store promo tiles.
  *
  *   npm run screenshots
  *
@@ -190,6 +191,10 @@ async function main() {
       await page.close();
       console.log(`assets/store/${scene.name}.png`);
     }
+
+    // The toolbar menu on its own, for the README (720×1200, i.e. 360×600 at 2×).
+    writeFileSync(join(OUT, "toolbar-menu.png"), Buffer.from(await renderPopup(browser, "https://ebird.org/targets?r1=CH"), "base64"));
+    console.log("assets/store/toolbar-menu.png");
 
     const assets = {
       logo: readFileSync(join(root, "logo/logo_300.png")).toString("base64"),

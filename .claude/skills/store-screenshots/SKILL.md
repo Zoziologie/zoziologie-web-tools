@@ -5,7 +5,7 @@ description: Recreate the store screenshots (1280×800) and Chrome Web Store pro
 
 # Store screenshots
 
-The images in `assets/store/` (five screenshots and two promo tiles) are built by `npm run screenshots` (`scripts/screenshots.mjs`) from raw page captures in `assets/raw/`. The toolbar menu is rendered from `popup/popup.html` by the script itself, so it always matches the code. The raw captures must come from the user's own signed-in Chrome: eBird and Macaulay Library show a bot check to automated browsers, and Targets, trip reports and bar charts need an eBird account.
+The images in `assets/store/` (five screenshots, two promo tiles and the README's `toolbar-menu.png`) are built by `npm run screenshots` (`scripts/screenshots.mjs`) from raw page captures in `assets/raw/`. The toolbar menu is rendered from `popup/popup.html` by the script itself, so it always matches the code. The raw captures must come from the user's own signed-in Chrome: eBird and Macaulay Library show a bot check to automated browsers, and Targets, trip reports and bar charts need an eBird account.
 
 ## 1. Prepare
 

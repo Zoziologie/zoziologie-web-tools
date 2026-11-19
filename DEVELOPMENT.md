@@ -16,7 +16,7 @@ Zoziologie is a Manifest V3 content-script extension for Chrome and Firefox, bui
 | `js/background.js` | Saves Macaulay media as `ML<number>.jpg/.mp3` with the optional `downloads` permission |
 | `css/biolovision-hide.css` | Hide decorative page elements before rendering |
 | `logo/` | Extension icons |
-| `assets/` | README and store images; not needed in a release package. `assets/store/` is generated, `assets/raw/` holds the page captures it is built from |
+| `assets/` | README and store images; not needed in a release package. `assets/store/` is generated from the page captures in `assets/raw/`; `barchart.png` and `checklist.png` are older README captures |
 | `scripts/screenshots.mjs` | Builds the 1280×800 store screenshots (`npm run screenshots`) |
 | `.claude/skills/store-screenshots/` | How Claude recaptures the raw pages in a signed-in Chrome and republishes the screenshots |
 | `tests/extension.test.cjs` | DOM fixtures, mocked API responses, and manifest checks |
@@ -101,7 +101,7 @@ Load this folder using **Load unpacked** in `chrome://extensions` (or as a tempo
 
 ## Store screenshots
 
-`npm run screenshots` turns the captures in `assets/raw/` into the five 1280×800 screenshots and the two Chrome Web Store promo tiles (440×280 and 1400×560) in `assets/store/`. The toolbar menu image is rendered from `popup/popup.html` with stubbed browser APIs, so it follows the code. Each scene in `scripts/screenshots.mjs` sets its capture, the crop anchor and amber boxes around the extension's controls. The raw captures need a signed-in browser (eBird's bot check and account pages), so they are retaken by hand or by Claude following `.claude/skills/store-screenshots/SKILL.md`; ask Claude to "update the store screenshots".
+`npm run screenshots` turns the captures in `assets/raw/` into the five 1280×800 screenshots, the two Chrome Web Store promo tiles (440×280 and 1400×560) and the README's menu image (`toolbar-menu.png`) in `assets/store/`. The toolbar menu is rendered from `popup/popup.html` with stubbed browser APIs, so it follows the code. Each scene in `scripts/screenshots.mjs` sets its capture, the crop anchor and amber boxes around the extension's controls. The raw captures need a signed-in browser (eBird's bot check and account pages), so they are retaken by hand or by Claude following `.claude/skills/store-screenshots/SKILL.md`; ask Claude to "update the store screenshots".
 
 ## Release
 

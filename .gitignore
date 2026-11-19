@@ -1,6 +1,16 @@
+# OS and editors
 .DS_Store
+.vscode/
+.idea/
+
+# Node
 node_modules/
-coverage/
+npm-debug.log*
+
+# Build and test output (store package, coverage, local browser validation runs)
 *.zip
+coverage/
 output/
-.playwright/
+
+# Personal Claude Code settings; project skills in .claude/skills/ are shared
+.claude/settings.local.json

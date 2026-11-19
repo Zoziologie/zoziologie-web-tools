@@ -2,25 +2,24 @@
 
 A browser extension for Chrome and Firefox with export and navigation tools for eBird, Macaulay Library, and Biolovision (ornitho, faune-france and regional portals).
 
-Source: [Zoziologie/zoziologie-web-tools](https://github.com/Zoziologie/zoziologie-web-tools). See [CHANGELOG.md](CHANGELOG.md) for release notes.
+See [CHANGELOG.md](CHANGELOG.md) for release notes and [PRIVACY.md](PRIVACY.md) for how data is handled. Released under the [MIT License](LICENSE).
 
-- [Zoziologie Web Tools](#zoziologie-web-tools)
-  - [How to install?](#how-to-install)
-  - [Toolbar menu and settings](#toolbar-menu-and-settings)
-  - [eBird](#ebird)
-    - [Export Target as CSV](#export-target-as-csv)
-    - [Search for Region as target](#search-for-region-as-target)
-    - [Export Trip report as CSV](#export-trip-report-as-csv)
-      - [Species Level](#species-level)
-      - [Observation Level](#observation-level)
-      - [Checklist Level](#checklist-level)
-    - [Export Barchart](#export-barchart)
-    - [Checklist: link to a species and Manage location](#checklist-link-to-a-species-and-manage-location)
-    - [Download photos and sounds](#download-photos-and-sounds)
-  - [Biolovision](#biolovision)
-    - [Export Species List](#export-species-list)
-    - [Export Summary](#export-summary)
-    - [Export List](#export-list)
+- [How to install?](#how-to-install)
+- [Toolbar menu and settings](#toolbar-menu-and-settings)
+- [eBird](#ebird)
+  - [Export Target as CSV](#export-target-as-csv)
+  - [Compare with any region](#compare-with-any-region)
+  - [Export Trip report as CSV](#export-trip-report-as-csv)
+  - [Export Barchart](#export-barchart)
+  - [Checklist: link to a species and Manage location](#checklist-link-to-a-species-and-manage-location)
+  - [Location and region shortcuts](#location-and-region-shortcuts)
+  - [Download photos and sounds](#download-photos-and-sounds)
+- [Biolovision](#biolovision)
+  - [Export Species List](#export-species-list)
+  - [Export Summary](#export-summary)
+  - [Export List](#export-list)
+- [CSV format](#csv-format)
+- [Development](#development)
 
 ## How to install?
 
@@ -41,7 +40,7 @@ Click the Zoziologie bird in the browser toolbar (pin it from the puzzle-piece m
 
 Settings follow your browser profile, and are synced if browser sync is on. Messages, such as the number of downloaded rows or an error, appear briefly at the bottom right of the page.
 
-<img width="360" alt="Toolbar menu on an eBird Targets page" src="assets/popup.png" />
+<img width="360" alt="Toolbar menu on an eBird Targets page" src="assets/store/toolbar-menu.png" />
 
 ## eBird
 
@@ -57,19 +56,17 @@ Export your [Target](https://ebird.org/targets) list into a [comma-separated val
 
 ![Targets page with the Download (csv) and Search regions buttons](assets/store/2-ebird-targets.png)
 
-### Search for Region as target
+### Compare with any region
 
-By default, in the target page, you can only search for parent region in the "For your: " list. With this extension, you can now search for any region. This is specifically useful when search target at a specific hotspot for its parent region.
-
-<img width="534" alt="image" src="https://github.com/user-attachments/assets/b041eae5-8660-46eb-b769-09e160c042a4" />
+On the Targets page, the "For your:" list only offers the parent regions of the selected region. The new "Search regions" button lets you pick any country, state or county instead, for example the species of a hotspot you still need for your county list.
 
 ### Export Trip report as CSV
 
-Export your [trip report](https://ebird.org/mytripreports) into a csv using the new button "Download (csv)" next to share and edit. Make sure to select the correct "DATA FOR:" according to what you want to download. There are three possible export:
+Export your [trip report](https://ebird.org/mytripreports) into a CSV using the new "Download (csv)" button next to Share and Edit. Select the right "DATA FOR:" first: the export follows it. There are three levels:
 
 #### Species Level
 
-Each row correspond to a species.
+Each row corresponds to a species.
 
 | speciesCode | category | commonName     | sciName          | numIndividuals | numChecklists | numPhotos | numAudio | numVideo | isLifer | numMedia | exoticCategory | isPhotoLifer | isAudioLifer |
 | ----------- | -------- | -------------- | ---------------- | -------------- | ------------- | --------- | -------- | -------- | ------- | -------- | -------------- | ------------ | ------------ |
@@ -77,7 +74,7 @@ Each row correspond to a species.
 
 #### Observation Level
 
-Each row correspond to a observations, which is similar to when clicking on "showing all details".
+Each row corresponds to an observation, as shown by "Show all details".
 
 | _same as species level_ | subId      | obsDt            | locName                                              | howMany |
 | ----------------------- | ---------- | ---------------- | ---------------------------------------------------- | ------- |
@@ -85,7 +82,7 @@ Each row correspond to a observations, which is similar to when clicking on "sho
 
 #### Checklist Level
 
-Each row correspond to a checklist, similar to the checklists view
+Each row corresponds to a checklist, as in the checklists view.
 
 | locId     | subId      | numSpecies | obsDt     | obsTime | isoObsDate       | subID      | name                                                           | latitude    | longitude  | countryCode | countryName  | subnational1Name | subnational1Code | isHotspot | locName                                                        | hierarchicalName                                                                 | locID     | lat         | lng        |
 | --------- | ---------- | ---------- | --------- | ------- | ---------------- | ---------- | -------------------------------------------------------------- | ----------- | ---------- | ----------- | ------------ | ---------------- | ---------------- | --------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------- | --------- | ----------- | ---------- |
@@ -95,9 +92,9 @@ Each row correspond to a checklist, similar to the checklists view
 
 ### Export Barchart
 
-Export a [barchart](https://ebird.org/GuideMe?cmd=changeLocation) data into a csv using the new button "Download (csv)" on top of the table.
+Export [bar chart](https://ebird.org/GuideMe?cmd=changeLocation) data into a CSV using the new "Download (csv)" button above the table (eBird sign-in required).
 
-First row is the normalization factor (i.e., number of checklists). There are 48 periods: 4 per months.
+The first row is the normalization factor (the number of checklists). There are 48 periods: 4 per month.
 
 | `speciesCode` | `category` | `commonName`     | `sciName`     | `exoticCategory` | `Jan1` | `Jan2` | `...` | `Dec4` |
 | ------------- | ---------- | ---------------- | ------------- | ---------------- | ------ | ------ | ----- | ------ |
@@ -108,10 +105,15 @@ First row is the normalization factor (i.e., number of checklists). There are 48
 
 ### Checklist: link to a species and Manage location
 
-- **Anchor link to species**: To share a specific sighting within your checklist, click on the link icon at the end of the line to copy the url of this entry on your clipboard. When opening this link, the page will automically scroll to this sighting.
-- **Manage location** (not visible on screenshot below): A new button, next to "Edit Location" will help you to nagivate to the Location page directly.
+- **Link to a species**: to share a specific sighting in a checklist, click the link icon at the end of its line. The address of that entry is copied to your clipboard, and opening it scrolls straight to the sighting.
+- **Manage location** (on your own checklists, not visible in the screenshot below): a new button next to "Edit Location", and an entry in the checklist tools menu, open the location's management page directly.
 
 ![image](assets/checklist.png)
+
+### Location and region shortcuts
+
+- On your location pages (Manage location), the menu gains **Target List** and **View in my eBird** for that location.
+- On region pages, the menu gains **Rare Bird Map**, which opens the [Global Rare eBird](https://zoziologie.raphaelnussbaumer.com/global-rare-ebird/) map for the country (or US state / Canadian province).
 
 ### Download photos and sounds
 
@@ -129,7 +131,7 @@ The extension also tidies the layout (hides banners and slideshows, puts the sea
 
 ### Export Species List
 
-Create csv files from Biolovision **Specie List** (`m_id=94`) pages using the csv button on the export row. This output page is selected on the last tab of the **search engine** page (`m_id=8`). The exported table contains the following columns:
+Download the **species list** output of the search engine (`m_id=8`, last tab; the result address contains `sp_FChoice=species`) with the CSV button in the Export row. The table contains:
 
 | `number` | `common_name` | `scientific_name` | `latest_date` | `breeding` | `link_observation`                                                                                                                                                                                                                                                                                          | `link_stat`                                                                    | `link_info`                                                                                  |
 | -------- | ------------- | ----------------- | ------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
@@ -139,28 +141,26 @@ Create csv files from Biolovision **Specie List** (`m_id=94`) pages using the cs
 
 ### Export Summary
 
-Create CSV files from Biolovision **Summary** (`m_id=32`) pages using the csv button on the export row. This output page is selected on the last tab of the **search engine** page (`m_id=8`). The exported table contains the following column:
+Download the **summary** output of the search engine (`sp_FChoice=synth`) with the CSV button in the Export row. The table contains:
 
 | `number` | `common_name` | `observers` | `place`  | `link_photo`                                                                                        | `link_observations`                                                                                                                                                                                                                                                                                                                 | `link_stat`                                                                             | `link_info` |
 | -------- | ------------- | ----------- | -------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
 | ~40      | Greylag Geese | 2 Observers | 2 places | <https://www.ornitho.ch/index.php?m_id=15&showback=stor&backlink=skip&y=2020&frmSpecies=60&sp_tg=1> | <https://www.ornitho.ch/index.php?m_id=94&showback=stor&p_c=5&p_cc=-1&sp_tg=1&sp_DateSynth=01.06.2020&sp_DChoice=range&sp_DFrom=01.06.2020&sp_DTo=01.06.2020&sp_SChoice=species&sp_S=60&sp_PChoice=canton&sp_cC=000100110000000000000011001001100000000000000000000&sp_FChoice=list&sp_FDisplay=DATE_PLACE_SPECIES&sp_DFormat=DESC> | <https://www.ornitho.ch/index.php?m_id=81&frmSpecies=60&showback=stor&cDate=2020-06-01> |
 
-![image](assets/summary.png)
-
 ### Export List
 
-Create CSV files from Biolovision **List** (`m_id=94`) pages using the csv button on the export row. This output page is selected on the last tab of the **search engine** page (`m_id=8`). The exported table contains the following column:
+Download the **list** output of the search engine (`sp_FChoice=list`) with the CSV button in the Export row. The table contains:
 
 | `date`   | `place`                                | `place_link`                                                  | `number` | `common_name`     | `scientific_name`  | `remark`                                  |
 | -------- | -------------------------------------- | ------------------------------------------------------------- | -------- | ----------------- | ------------------ | ----------------------------------------- |
 | 06.01.24 | Widensolen (village) / Widensolen (68) | <https://www.faune-grandest.org/index.php?m_id=52&id=1153273> | 2        | Bécasses des bois | Scolopax rusticola | Remarque :observation de mon salon en vol |
 
-_No screen shot_
+## CSV format
+
+CSV exports use UTF-8 with a BOM, comma separators, standard quoted fields, and CRLF record separators, so they open correctly in R, Python, QGIS and spreadsheets. Commas, quotes, newlines, and non-ASCII names are preserved. Trip exports include columns appearing in later rows, so optional observation fields are not lost. Biolovision list exports keep the site's displayed date text rather than guessing a date from the browser's locale; remarks keep their original punctuation and line breaks.
 
 ## Development
 
-See [DEVELOPMENT.md](DEVELOPMENT.md) for the file layout, automated checks, manual verification, and release steps. The extension runs directly from this repository; no build step or runtime dependencies are required.
+The extension runs directly from this repository, with no build step or runtime dependencies. Load a local copy from `chrome://extensions` (enable **Developer mode**, click **Load unpacked**, select this folder) or from `about:debugging` in Firefox. After editing, reload the extension and refresh the affected tab.
 
-Load a local copy from `chrome://extensions`: enable **Developer mode**, click **Load unpacked**, and select this folder. After editing, reload the extension and refresh the affected website tab.
-
-CSV exports use UTF-8 with a BOM, standard quoted fields, and CRLF record separators. Commas, quotes, newlines, and non-ASCII names are preserved. Single-result exports are supported. Trip exports include columns appearing in later rows, so optional observation fields are not lost. Biolovision list exports preserve the site's displayed date text rather than guessing a date from the browser's locale; remarks retain their original punctuation and line breaks.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for the file layout, tests (`npm run check`), Firefox linting, store screenshots (`npm run screenshots`) and release steps.

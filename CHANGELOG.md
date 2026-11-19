@@ -3,7 +3,9 @@
 ## Unreleased
 
 - Targets: the region search box now has a proper input border and its result count no longer overlaps the Clear button; its hint says it finds countries, states and counties.
-- `npm run screenshots` builds the store screenshots from page captures; see DEVELOPMENT.md.
+- `npm run screenshots` builds the store screenshots, promo tiles and README menu image from page captures; a project skill describes how Claude recaptures the pages. New images use the Oman trip report and a Hoopoe photo.
+- README: corrected Biolovision page names (`sp_FChoice`), the region search description and typos; added the location and region shortcuts and a CSV format section; dropped the outdated summary and region-search images.
+- `.gitignore` reorganised; ignores personal Claude Code settings.
 
 ## 5.9.0 — 19 November 2026
 
